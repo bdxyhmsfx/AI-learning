@@ -1,0 +1,16 @@
+from rag_knowledge_base.vector_store.qdrant_store import (client,COLLECTION_NAME,search_chunks)
+exists = client.collection_exists(collection_name=COLLECTION_NAME)
+print("Collection 是否存在：",exists)
+count_result = client.count(collection_name=COLLECTION_NAME,exact=True)
+print("Point 数量：",count_result.count)
+query = "Multi-Head Attention 有什么作用？"
+results = search_chunks(query,k=3,source="rag.docx")
+for i, result in enumerate(results,start=1):
+    print("\n" + "=" * 60)
+    print("排名：",i)
+    print("score：",result["score"])
+    print("source：",result["source"])
+    print("page：",result["page"])
+    print("text：")
+    print(result["text"])
+client.close()

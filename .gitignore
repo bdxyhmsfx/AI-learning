@@ -1,0 +1,32 @@
+# Python virtual environments and caches
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local editor settings
+.idea/
+
+# Local credentials; keep a template with placeholder values if needed
+.env
+.env.*
+!.env.example
+
+# Model weights
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.ckpt
+
+# Downloaded models and generated fine-tuning output
+/transform/directory_on_my_computer/
+/Large model fine-tuning/qwen3_lora_output/
+/Large model fine-tuning/qwen3_ai_lora_adapter/
+
+# Downloaded datasets; retain small RAG input documents
+**/FashionMNIST/
+
+# Generated local vector database
+/rag_knowledge_base/qdrant_storage/

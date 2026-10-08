@@ -1,0 +1,35 @@
+LoRA 是一种参数高效微调方法，全称为 Low-Rank Adaptation。
+
+在传统 Full Fine-Tuning 中，模型的大量参数都会参与训练，因此需要保存大量梯度和优化器状态，显存和计算成本都比较高。
+
+LoRA 的核心思想是冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B。
+
+可以表示为：
+
+W' = W + BA
+
+实际使用中通常还会加入缩放系数：
+
+W' = W + (alpha / r)BA
+
+其中，r 表示低秩矩阵的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。
+
+lora_alpha 用于控制 LoRA 分支的缩放强度。常见的缩放系数为 alpha / r。
+
+lora_dropout 表示 LoRA 分支中的 Dropout 概率，可以起到一定的正则化作用。
+
+target_modules 用来指定 LoRA 加到模型中的哪些模块。例如在 Transformer 中，可以把 LoRA 加到 q_proj、v_proj 等 Attention 投影层。
+
+LoRA 训练时，原始 Base Model 的参数通常保持冻结，主要训练新增的 A、B 矩阵。
+
+相比 Full Fine-Tuning，LoRA 的主要优势包括：
+
+需要训练的参数更少。
+显存占用更低。
+训练速度更快。
+Adapter 文件更小。
+可以为同一个 Base Model 保存多个不同任务的 Adapter。
+
+QLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。
+
+LoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。
