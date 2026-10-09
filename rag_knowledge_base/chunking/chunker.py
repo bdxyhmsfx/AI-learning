@@ -6,17 +6,20 @@ model_name = "sentence-transformers/all-MiniLM-L6-v2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 def split_text_by_tokens(text,chunk_size=200,chunk_overlap=30):
-    if chunk_overlap >= chunk_size:
-        raise ValueError("chunk_overlap 必须小于 chunk_size")
-    token_ids = tokenizer.encode(text,add_special_tokens=False)
+    if chunk_size <= 0 or not 0 <= chunk_overlap < chunk_size:
+        raise ValueError("chunk_size 和 chunk_overlap 参数不合法")
+    encoding=tokenizer(text,add_special_tokens=False,return_offsets_mapping=True)
+    offsets=encoding["offset_mapping"]
     chunks = []
     start = 0
-    while start < len(token_ids):
-        end = min(len(token_ids),start+chunk_size)
-        chunk_token = token_ids[start:end]
-        chunk_text = tokenizer.decode(chunk_token, skip_special_tokens=True)
-        chunks.append(chunk_text.strip())
-        if end == len(token_ids):
+    while start < len(offsets):
+        end = min(len(offsets),start+chunk_size)
+        start_char = offsets[start][0]
+        end_char = offsets[end-1][1]
+        chunk_text = text[start_char:end_char]
+        if chunk_text:
+            chunks.append(chunk_text)
+        if end == len(offsets):
             break
         start = end - chunk_overlap
     return chunks

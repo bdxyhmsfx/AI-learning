@@ -11,6 +11,9 @@ all_chunks = deduplicate_chunks(all_chunks)
 embeddings = embed_chunks(all_chunks)
 
 vector_size = embeddings.shape[1]
+if client.collection_exists(collection_name=COLLECTION_NAME):
+    client.delete_collection(collection_name=COLLECTION_NAME)
+    print("旧 Collection 删除成功")
 create_collection(vector_size)
 upsert_chunks(all_chunks,embeddings)
 count_result = client.count(collection_name=COLLECTION_NAME,exact=True)
