@@ -10,7 +10,7 @@ llm.eval()
 def generate_answer(prompt,max_new_tokens=200):
     inputs = tokenizer.apply_chat_template(
         prompt,
-        tokemizer=True,
+        tokenize=True,
         add_generation_prompt=True,
         enable_thinking=False,
         return_dict=True,

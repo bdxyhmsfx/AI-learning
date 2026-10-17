@@ -11,7 +11,7 @@ def load_file(file_path):
     elif suffix == ".docx":
         document = load_docx_file(file_path)
         documents = [document]
-    elif suffix in [".text",".md"]:
+    elif suffix in [".txt",".text",".md"]:
         document = load_text_file(file_path)
         documents = [document]
     else:

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "q001",
+    "question": "Multi-Head Attention 为什么要使用多个注意力头？",
+    "gold_chunk_ids": ["b64aad9f27aa90d2d147557050c2d2aa"],
+    "answerable": true,
+    "expected_facts": [
+      "不同注意力头可以学习不同表示子空间的信息",
+      "不同注意力头可以关注不同类型的关系"
+    ],
+    "category": "semantic"
+  },
+  {
+    "id": "q002",
+    "question": "Causal Mask 的作用是什么？",
+    "gold_chunk_ids": ["fb46ee009583ae39a607b6d8f04202e7"],
+    "answerable": true,
+    "expected_facts": [
+      "防止当前位置看到未来 Token"
+    ],
+    "category": "semantic"
+  },
+  {
+    "id": "q003",
+    "question": "Scaled Dot-Product Attention 的计算步骤是什么？",
+    "gold_chunk_ids": ["fb46ee009583ae39a607b6d8f04202e7"],
+    "answerable": true,
+    "expected_facts": [
+      "计算 Q 和 K 的点积",
+      "除以 sqrt(d_k)",
+      "经过 Softmax 得到注意力权重",
+      "使用注意力权重对 V 加权求和"
+    ],
+    "category": "process"
+  },
+  {
+    "id": "q004",
+    "question": "Self-Attention 中的 Q、K、V 来自哪里？",
+    "gold_chunk_ids": ["27191f3e8f5ef26070ae81429f358b60"],
+    "answerable": true,
+    "expected_facts": [
+      "Query、Key、Value 都来自同一个输入序列"
+    ],
+    "category": "concept"
+  },
+  {
+    "id": "q005",
+    "question": "Transformer Block 通常包含哪些组件？",
+    "gold_chunk_ids": ["54ef72166af3cd482fcac084c7658a9b"],
+    "answerable": true,
+    "expected_facts": [
+      "Attention",
+      "Feed Forward Network",
+      "Residual Connection",
+      "Normalization"
+    ],
+    "category": "concept"
+  },
+  {
+    "id": "q006",
+    "question": "相比传统 RNN，Transformer 为什么具有较好的训练并行性？",
+    "gold_chunk_ids": ["0a0f9a7ff5f6517df41a4794bb06b530"],
+    "answerable": true,
+    "expected_facts": [
+      "Transformer 不需要按照时间顺序逐个处理 Token"
+    ],
+    "category": "semantic"
+  },
+  {
+    "id": "q007",
+    "question": "输入文本在 Transformer 中如何转换成 Token ID？",
+    "gold_chunk_ids": ["0a0f9a7ff5f6517df41a4794bb06b530"],
+    "answerable": true,
+    "expected_facts": [
+      "输入文本经过 Tokenizer 转换成一系列 Token ID"
+    ],
+    "category": "process"
+  },
+  {
+    "id": "q008",
+    "question": "一个基础 RAG 系统的处理流程是什么？",
+    "gold_chunk_ids": [
+      "0785e3b3946ec199e014ff01acb61799",
+      "bd482f7e35137c81ff3dca8433e04f3a"
+    ],
+    "answerable": true,
+    "expected_facts": [
+      "用户提出问题并生成 Query Embedding",
+      "Retriever 检索相关 Chunk",
+      "将检索结果组合成 Context",
+      "Context 和问题进入 Prompt",
+      "LLM 生成答案"
+    ],
+    "category": "process"
+  },
+  {
+    "id": "q009",
+    "question": "RAG 与 Fine-Tuning 的主要区别是什么？",
+    "gold_chunk_ids": [
+      "bd482f7e35137c81ff3dca8433e04f3a",
+      "103f6c6e89032cd9713c198908d7f0f5"
+    ],
+    "answerable": true,
+    "expected_facts": [
+      "Fine-Tuning 会修改模型参数",
+      "RAG 通常不修改模型参数，而是在推理阶段提供外部知识"
+    ],
+    "category": "comparison"
+  },
+  {
+    "id": "q010",
+    "question": "LoRA 如何利用低秩矩阵进行参数高效微调？",
+    "gold_chunk_ids": ["e7fe46dc794313b25bb6122dabee07e0"],
+    "answerable": true,
+    "expected_facts": [
+      "冻结原始模型参数 W",
+      "使用两个低秩矩阵 A 和 B",
+      "通过低秩矩阵的乘积形成权重更新"
+    ],
+    "category": "semantic"
+  },
+  {
+    "id": "q011",
+    "question": "LoRA 中的 r 和 lora_alpha 分别有什么作用？",
+    "gold_chunk_ids": ["1fac32c06b221405b1b83d45c900a56e"],
+    "answerable": true,
+    "expected_facts": [
+      "r 表示低秩矩阵的秩",
+      "lora_alpha 控制 LoRA 分支的缩放强度",
+      "常见缩放系数为 alpha / r"
+    ],
+    "category": "concept"
+  },
+  {
+    "id": "q012",
+    "question": "LoRA 相比 Full Fine-Tuning 有哪些优势？",
+    "gold_chunk_ids": ["487ab767c275f9d6760e864ea7e3014b"],
+    "answerable": true,
+    "expected_facts": [
+      "需要训练的参数更少",
+      "显存占用更低",
+      "训练速度更快",
+      "Adapter 文件更小"
+    ],
+    "category": "comparison"
+  },
+  {
+    "id": "q013",
+    "question": "QLoRA 如何进一步降低显存占用？",
+    "gold_chunk_ids": ["487ab767c275f9d6760e864ea7e3014b"],
+    "answerable": true,
+    "expected_facts": [
+      "将冻结的 Base Model 进行低比特量化",
+      "在量化模型上训练 LoRA Adapter"
+    ],
+    "category": "semantic"
+  },
+  {
+    "id": "q014",
+    "question": "什么是 Kubernetes 的 Pod？",
+    "gold_chunk_ids": [],
+    "answerable": false,
+    "expected_facts": [],
+    "category": "out_of_scope"
+  },
+  {
+    "id": "q015",
+    "question": "PostgreSQL 的 MVCC 是如何工作的？",
+    "gold_chunk_ids": [],
+    "answerable": false,
+    "expected_facts": [],
+    "category": "out_of_scope"
+  },
+  {
+    "id": "q016",
+    "question": "CNN 卷积层输出尺寸的计算公式是什么？",
+    "gold_chunk_ids": [],
+    "answerable": false,
+    "expected_facts": [],
+    "category": "out_of_scope"
+  }
+]
