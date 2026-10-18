@@ -1,0 +1,258 @@
+[
+  {
+    "id": "q001",
+    "question": "Multi-Head Attention 为什么要使用多个注意力头？",
+    "answerable": true,
+    "answer": "Multi-Head Attention 之所以使用多个注意力头，是因为它能够从不同的表示子空间中学习信息，从而让模型能够关注不同类型的关系。例如，不同的注意力头可以分别关注相邻 token 或长距离依赖关系，从而提升模型的表达能力。[1]",
+    "times_ms": {
+      "retrieval_ms": 6.20800000615418,
+      "reranker_ms": 34.5258999732323,
+      "context_ms": 0.01910002902150154,
+      "prompt_ms": 0.007099995855242014,
+      "generation_ms": 1849.85769999912,
+      "citation_ms": 0.022799998987466097,
+      "total_ms": 1890.694000001531
+    },
+    "peak_gpu_mb": 2383.470703125
+  },
+  {
+    "id": "q002",
+    "question": "Causal Mask 的作用是什么？",
+    "answerable": true,
+    "answer": "Causal Mask 的作用是防止当前位置看到未来 token，因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的 token。[1]",
+    "times_ms": {
+      "retrieval_ms": 13.215500046499074,
+      "reranker_ms": 29.627100040670484,
+      "context_ms": 0.0323000131174922,
+      "prompt_ms": 0.012700038496404886,
+      "generation_ms": 1084.590400045272,
+      "citation_ms": 0.017900019884109497,
+      "total_ms": 1127.5627999566495
+    },
+    "peak_gpu_mb": 2375.396484375
+  },
+  {
+    "id": "q003",
+    "question": "Scaled Dot-Product Attention 的计算步骤是什么？",
+    "answerable": true,
+    "answer": "Scaled Dot-Product Attention 的计算步骤如下：\n\n1. 计算 QK^T，其中 Q 是 Query，K 是 Key，得到 Query 与各个 Key 之间的匹配程度。\n2. 除以 sqrt(d_k)，以避免维度较大时点积数值过大，从而使得 Softmax 进入梯度较小的区域。\n3. 进行 Softmax，得到注意力权重。\n4. 使用这些权重对 V 进行加权求和，得到 Attention 输出。\n\n根据参考资料 [1]，这些步骤是Scaled Dot-Product Attention的核心计算过程。",
+    "times_ms": {
+      "retrieval_ms": 5.927100020926446,
+      "reranker_ms": 29.108799993991852,
+      "context_ms": 0.026900030206888914,
+      "prompt_ms": 0.015500001609325409,
+      "generation_ms": 3698.327000020072,
+      "citation_ms": 0.018799968529492617,
+      "total_ms": 3733.486699988134
+    },
+    "peak_gpu_mb": 2390.8857421875
+  },
+  {
+    "id": "q004",
+    "question": "Self-Attention 中的 Q、K、V 来自哪里？",
+    "answerable": true,
+    "answer": "Self-Attention 中的 Q、K、V 都来自同一个输入序列。假设输入经过线性映射得到 Q、K、V，其中 Q 表示 Query，K 表示 Key，V 表示 Value。Q 和 K 的点积用于衡量不同 token 之间的相关程度。[1]",
+    "times_ms": {
+      "retrieval_ms": 5.837200034875423,
+      "reranker_ms": 30.02930001821369,
+      "context_ms": 0.02050003968179226,
+      "prompt_ms": 0.008000002708286047,
+      "generation_ms": 2096.4411000022665,
+      "citation_ms": 0.017600017599761486,
+      "total_ms": 2132.407900004182
+    },
+    "peak_gpu_mb": 2391.201171875
+  },
+  {
+    "id": "q005",
+    "question": "Transformer Block 通常包含哪些组件？",
+    "answerable": true,
+    "answer": "Transformer Block 通常包含以下组件：Attention、Feed Forward Network、Residual Connection 和Normalization。[1]",
+    "times_ms": {
+      "retrieval_ms": 5.712100013624877,
+      "reranker_ms": 29.047799995169044,
+      "context_ms": 0.017700018361210823,
+      "prompt_ms": 0.007399998139590025,
+      "generation_ms": 753.5722000175156,
+      "citation_ms": 0.01810002140700817,
+      "total_ms": 788.4237000253052
+    },
+    "peak_gpu_mb": 2372.2744140625
+  },
+  {
+    "id": "q006",
+    "question": "相比传统 RNN，Transformer 为什么具有较好的训练并行性？",
+    "answerable": true,
+    "answer": "相比传统 RNN，Transformer 具有较好的训练并行性，因为其基于 Attention 机制，能够将信息并行处理，从而在训练时具有较好的并行计算能力。这使得模型在处理大规模数据时能够更高效地进行计算，从而提升训练效率。[1]",
+    "times_ms": {
+      "retrieval_ms": 5.725399998482317,
+      "reranker_ms": 31.43530001398176,
+      "context_ms": 0.019700033590197563,
+      "prompt_ms": 0.007099995855242014,
+      "generation_ms": 1962.3752999468707,
+      "citation_ms": 0.018200022168457508,
+      "total_ms": 1999.6324999956414
+    },
+    "peak_gpu_mb": 2380.25146484375
+  },
+  {
+    "id": "q007",
+    "question": "输入文本在 Transformer 中如何转换成 Token ID？",
+    "answerable": true,
+    "answer": "输入文本首先经过 Tokenizer，被转换成一系列 Token ID。例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]\n```",
+    "times_ms": {
+      "retrieval_ms": 5.591400025878102,
+      "reranker_ms": 27.036799991037697,
+      "context_ms": 0.01680001150816679,
+      "prompt_ms": 0.007099995855242014,
+      "generation_ms": 1331.8208999698982,
+      "citation_ms": 0.01479999627918005,
+      "total_ms": 1364.5359000074677
+    },
+    "peak_gpu_mb": 2372.2060546875
+  },
+  {
+    "id": "q008",
+    "question": "一个基础 RAG 系统的处理流程是什么？",
+    "answerable": true,
+    "answer": "一个基础 RAG 系统的处理流程包括以下步骤：\n\n1. 用户提出问题。\n2. 系统将问题转换为查询向量。\n3. 系统使用向量索引检索与问题最相关的 Top-K 信息。\n4. 这些检索到的信息作为 Context 传递给大语言模型进行生成。\n\n根据参考资料 [1]，RAG 的基本流程是用户提出问题，系统进行检索，然后将检索结果作为 Context 传递给大语言模型生成答案。",
+    "times_ms": {
+      "retrieval_ms": 6.0258000157773495,
+      "reranker_ms": 26.605399965774268,
+      "context_ms": 0.019600032828748226,
+      "prompt_ms": 0.00689999433234334,
+      "generation_ms": 3348.94630004419,
+      "citation_ms": 0.017900019884109497,
+      "total_ms": 3381.6744000068866
+    },
+    "peak_gpu_mb": 2370.1982421875
+  },
+  {
+    "id": "q009",
+    "question": "RAG 与 Fine-Tuning 的主要区别是什么？",
+    "answerable": true,
+    "answer": "RAG（Retrieval-Augmented Generation）与 Fine-Tuning 的主要区别包括：\n\n1. **不修改模型参数**：RAG 不修改大语言模型的参数，而 Fine-Tuning 会修改模型参数以适应新的任务或风格。\n\n2. **不改变任务能力**：RAG 通常不修改大语言模型的任务能力，而 Fine-Tuning 会增强模型对特定任务的能力。\n\n3. **适合外部知识更新**：对于需要频繁更新的外部知识，通常可以结合 RAG 使用，而 Fine-Tuning 通常不适用于这种场景。\n\n[2]",
+    "times_ms": {
+      "retrieval_ms": 5.576099967584014,
+      "reranker_ms": 29.523000004701316,
+      "context_ms": 0.019600032828748226,
+      "prompt_ms": 0.007399998139590025,
+      "generation_ms": 4520.542000012938,
+      "citation_ms": 0.033400021493434906,
+      "total_ms": 4555.768399965018
+    },
+    "peak_gpu_mb": 2375.396484375
+  },
+  {
+    "id": "q010",
+    "question": "LoRA 如何利用低秩矩阵进行参数高效微调？",
+    "answerable": true,
+    "answer": "LoRA（Low-Rank Adaptation）通过冻结原始模型参数 $ W $，并在部分线性层旁边加入两个低秩矩阵 $ A $ 和 $ B $，表示为 $ W' = W + (alpha / r)BA $，其中 $ r $ 表示低秩矩阵的秩。$ r $ 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。[1]",
+    "times_ms": {
+      "retrieval_ms": 7.8789000399410725,
+      "reranker_ms": 33.529299951624125,
+      "context_ms": 0.020200037397444248,
+      "prompt_ms": 0.008000002708286047,
+      "generation_ms": 4420.363100012764,
+      "citation_ms": 0.018099963199347258,
+      "total_ms": 4461.869099992327
+    },
+    "peak_gpu_mb": 2386.8818359375
+  },
+  {
+    "id": "q011",
+    "question": "LoRA 中的 r 和 lora_alpha 分别有什么作用？",
+    "answerable": true,
+    "answer": "在 LoRA 中：\n\n- **r** 表示低秩矩阵的秩，r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\n- **lora_alpha** 用于控制 LoRA 分支的缩放强度，常见的缩放系数为 alpha / r。\n\n因此，r 和 lora_alpha 的作用分别如下：\n\n- **r**：影响 LoRA 可以训练的参数数量和表达能力，同时增加显存和计算开销。\n\n- **lora_alpha**：用于控制 LoRA 分支的缩放强度，影响 LoRA 的效果和参数数量。",
+    "times_ms": {
+      "retrieval_ms": 7.594500028062612,
+      "reranker_ms": 37.28739998769015,
+      "context_ms": 0.015500001609325409,
+      "prompt_ms": 0.006799993570894003,
+      "generation_ms": 5715.792100003455,
+      "citation_ms": 0.013400043826550245,
+      "total_ms": 5760.757700016256
+    },
+    "peak_gpu_mb": 2377.59033203125
+  },
+  {
+    "id": "q012",
+    "question": "LoRA 相比 Full Fine-Tuning 有哪些优势？",
+    "answerable": true,
+    "answer": "相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n- 需要训练的参数更少。\n- 显存占用更低。\n- 训练速度更快。\n- Adapter 文件更小。\n- 可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\n[1]",
+    "times_ms": {
+      "retrieval_ms": 6.8029999965801835,
+      "reranker_ms": 34.193300001788884,
+      "context_ms": 0.019000028260052204,
+      "prompt_ms": 0.007399998139590025,
+      "generation_ms": 2765.8692999975756,
+      "citation_ms": 0.01810002140700817,
+      "total_ms": 2806.959400011692
+    },
+    "peak_gpu_mb": 2386.7490234375
+  },
+  {
+    "id": "q013",
+    "question": "QLoRA 如何进一步降低显存占用？",
+    "answerable": true,
+    "answer": "QLoRA 更进一步降低显存占用，因为它通过冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B，从而减少显存占用。具体来说，QLoRA 通常会先将冻结的 Base Model 进行低比特量化（例如使用 4-bit 权重），然后继续训练 LoRA Adapter，从而进一步降低显存占用。[1]",
+    "times_ms": {
+      "retrieval_ms": 8.366999973077327,
+      "reranker_ms": 30.97610000986606,
+      "context_ms": 0.0171000137925148,
+      "prompt_ms": 0.007199996616691351,
+      "generation_ms": 3354.8154000309296,
+      "citation_ms": 0.018700025975704193,
+      "total_ms": 3394.25139996456
+    },
+    "peak_gpu_mb": 2377.01171875
+  },
+  {
+    "id": "q014",
+    "question": "什么是 Kubernetes 的 Pod？",
+    "answerable": false,
+    "answer": "Kubernetes 的 Pod 是 Kubernetes 中用于管理一组容器的最小工作单元。每个 Pod 包含一个或多个运行在容器中的应用程序，这些容器可以共享资源，如网络、存储等。Pod 的主要目的是将应用程序部署到一个可管理的环境中，以便于自动化管理、扩展和维护。[1]",
+    "times_ms": {
+      "retrieval_ms": 5.46559999929741,
+      "reranker_ms": 28.464899980463088,
+      "context_ms": 0.0247000134550035,
+      "prompt_ms": 0.007700000423938036,
+      "generation_ms": 2983.4626000374556,
+      "citation_ms": 0.022799998987466097,
+      "total_ms": 3017.4973999965005
+    },
+    "peak_gpu_mb": 2350.646484375
+  },
+  {
+    "id": "q015",
+    "question": "PostgreSQL 的 MVCC 是如何工作的？",
+    "answerable": false,
+    "answer": "根据当前提供的知识库资料，无法确定答案。",
+    "times_ms": {
+      "retrieval_ms": 5.538900033570826,
+      "reranker_ms": 37.02539997175336,
+      "context_ms": 0.019499973859637976,
+      "prompt_ms": 0.007599999662488699,
+      "generation_ms": 487.97119996743277,
+      "citation_ms": 0.015500001609325409,
+      "total_ms": 530.6267000269145
+    },
+    "peak_gpu_mb": 2351.1875
+  },
+  {
+    "id": "q016",
+    "question": "CNN 卷积层输出尺寸的计算公式是什么？",
+    "answerable": false,
+    "answer": "根据当前提供的知识库资料，无法确定答案。",
+    "times_ms": {
+      "retrieval_ms": 8.632600016426295,
+      "reranker_ms": 29.6927000163123,
+      "context_ms": 0.018899969290941954,
+      "prompt_ms": 0.007700000423938036,
+      "generation_ms": 532.0962999830954,
+      "citation_ms": 0.013999990187585354,
+      "total_ms": 570.5146000254899
+    },
+    "peak_gpu_mb": 2372.2744140625
+  }
+]
