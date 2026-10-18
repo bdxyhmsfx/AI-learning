@@ -45,12 +45,12 @@
     "invalid_ids": [],
     "has_citations": true,
     "scores": {
-      "relevance": null,
-      "correctness": null,
-      "faithfulness": null,
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
       "abstention": null
     },
-    "notes": ""
+    "notes": "回答完整覆盖两个预期事实，相关性高，所有主要结论均得到Context支持。"
   },
   {
     "id": "q008",
@@ -102,12 +102,12 @@
     "invalid_ids": [],
     "has_citations": true,
     "scores": {
-      "relevance": null,
-      "correctness": null,
-      "faithfulness": null,
+      "relevance": 2,
+      "correctness": 1,
+      "faithfulness": 2,
       "abstention": null
     },
-    "notes": ""
+    "notes": "回答基本正确，但没有明确说明Context与Question共同构建Prompt的环节；已陈述内容均有Context支持。"
   },
   {
     "id": "q009",
@@ -156,12 +156,12 @@
     "invalid_ids": [],
     "has_citations": true,
     "scores": {
-      "relevance": null,
-      "correctness": null,
-      "faithfulness": null,
+      "relevance": 2,
+      "correctness": 1,
+      "faithfulness": 1,
       "abstention": null
     },
-    "notes": ""
+    "notes": "核心比较基本正确，但对Fine-Tuning适用场景的判断过于笼统；部分结论缺少完整Context支持，引用[2]也不足以支撑整个答案。"
   },
   {
     "id": "q014",
@@ -207,8 +207,8 @@
       "relevance": null,
       "correctness": null,
       "faithfulness": null,
-      "abstention": null
+      "abstention": 0
     },
-    "notes": ""
+    "notes": "知识库外问题未正确拒答，模型直接利用自身知识回答Pod定义，并使用与答案无关的[1]引用。"
   }
 ]
