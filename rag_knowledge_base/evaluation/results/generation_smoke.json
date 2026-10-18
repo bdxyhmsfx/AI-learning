@@ -1,0 +1,214 @@
+[
+  {
+    "id": "q001",
+    "question": "Multi-Head Attention 为什么要使用多个注意力头？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "b64aad9f27aa90d2d147557050c2d2aa"
+    ],
+    "expected_facts": [
+      "不同注意力头可以学习不同表示子空间的信息",
+      "不同注意力头可以关注不同类型的关系"
+    ],
+    "category": "semantic",
+    "retrieved_chunk_ids": [
+      "b64aad9f27aa90d2d147557050c2d2aa",
+      "54ef72166af3cd482fcac084c7658a9b",
+      "27191f3e8f5ef26070ae81429f358b60"
+    ],
+    "context": "[1] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通\n\n[2] 来源:attention.pdf | 第3页\n内容：注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通 常 由 Attention 、 Feed Forward Network 、 Residual Connection 和\nNormalization 等部分共同组成。\nAttention 负责 token 之间的信息交互，而 Feed Forward Network 则进一步处理每个 token\n的表示。\n\n[3] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。",
+    "answer": "Multi-Head Attention 之所以使用多个注意力头，是因为它能够从不同的表示子空间中学习信息，从而让模型能够关注不同类型的关系。例如，不同的注意力头可以分别关注相邻 token 或长距离依赖关系，从而提升模型的表达能力。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "54ef72166af3cd482fcac084c7658a9b"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": null
+    },
+    "notes": ""
+  },
+  {
+    "id": "q008",
+    "question": "一个基础 RAG 系统的处理流程是什么？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "0785e3b3946ec199e014ff01acb61799",
+      "bd482f7e35137c81ff3dca8433e04f3a"
+    ],
+    "expected_facts": [
+      "用户提出问题并生成 Query Embedding",
+      "Retriever 检索相关 Chunk",
+      "将检索结果组合成 Context",
+      "Context 和问题进入 Prompt",
+      "LLM 生成答案"
+    ],
+    "category": "process",
+    "retrieved_chunk_ids": [
+      "0785e3b3946ec199e014ff01acb61799",
+      "103f6c6e89032cd9713c198908d7f0f5",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:rag.docx\n内容：RAG 学习笔记\n\nRAG 的全称是 Retrieval-Augmented Generation，即检索增强生成。\n\nRAG 的核心思想\n\n大语言模型本身的参数中不一定包含最新知识、企业内部知识或者用户自己的私人文档。\n\nRAG 不需要为了这些知识重新训练大语言模型，而是在用户提问之后，先从外部知识库中检索相关资料，再将检索结果放入 Context 中交给大语言模型生成答案。\n\nRAG 的基本流程\n\n一个基础 RAG 系统通常包括以下过程：\n\n用户提出 Question。\n\n系统将 Question 转换成 Query Embedding。\n\nRetriever 从向量索引中找到与问题最相关的 Top-K Chunks。\n\n这些 Chunks\n\n[2] 来源:rag.docx\n内容：使模型学习新的行为、风格或特定任务能力。\n\nRAG 通常不修改大语言模型的参数，而是在推理阶段临时提供外部知识。\n\n因此，如果知识经常发生变化，RAG 通常比重新训练模型更加方便。\n\nRAG 的局限\n\nRAG 的最终回答质量很大程度上依赖检索质量。\n\n如果 Retriever 没有找到正确内容，即使大语言模型能力很强，也可能无法得到正确答案。\n\n因此真实 RAG 系统通常还会加入 Hybrid Search、Reranker 和 Evaluation。\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "一个基础 RAG 系统的处理流程包括以下步骤：\n\n1. 用户提出问题。\n2. 系统将问题转换为查询向量。\n3. 系统使用向量索引检索与问题最相关的 Top-K 信息。\n4. 这些检索到的信息作为 Context 传递给大语言模型进行生成。\n\n根据参考资料 [1]，RAG 的基本流程是用户提出问题，系统进行检索，然后将检索结果作为 Context 传递给大语言模型生成答案。",
+    "available_citations": {
+      "1": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "0785e3b3946ec199e014ff01acb61799"
+      },
+      "2": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "103f6c6e89032cd9713c198908d7f0f5"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "0785e3b3946ec199e014ff01acb61799"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": null
+    },
+    "notes": ""
+  },
+  {
+    "id": "q009",
+    "question": "RAG 与 Fine-Tuning 的主要区别是什么？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "bd482f7e35137c81ff3dca8433e04f3a",
+      "103f6c6e89032cd9713c198908d7f0f5"
+    ],
+    "expected_facts": [
+      "Fine-Tuning 会修改模型参数",
+      "RAG 通常不修改模型参数，而是在推理阶段提供外部知识"
+    ],
+    "category": "comparison",
+    "retrieved_chunk_ids": [
+      "bd482f7e35137c81ff3dca8433e04f3a",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb",
+      "487ab767c275f9d6760e864ea7e3014b"
+    ],
+    "context": "[1] 来源:rag.docx\n内容：Query Embedding。\n\nRetriever 从向量索引中找到与问题最相关的 Top-K Chunks。\n\n这些 Chunks 被组合成 Context。\n\nContext 和 Question 被共同放入 Prompt。\n\nLLM 根据 Prompt 生成最终答案。\n\nRetriever\n\nRetriever 的作用是从知识库中找到与用户问题最相关的内容。\n\nRetriever 本身通常不会负责生成自然语言答案。\n\n一个基础 Retriever 可以由 Embedding Model、Vector Index、Similarity Search 和 Top-K Retrieval 等部分组成。\n\nFAISS 可以作为 Retriever 中的向量搜索组件。\n\nRAG 与 Fine-Tuning 的区别\n\nFine-Tuning 会修改模型参数，使模型学习新的行为、风格或特定任务能力。\n\nRAG 通常不修改大语言模\n\n[2] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。\n\n[3] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用",
+    "answer": "RAG（Retrieval-Augmented Generation）与 Fine-Tuning 的主要区别包括：\n\n1. **不修改模型参数**：RAG 不修改大语言模型的参数，而 Fine-Tuning 会修改模型参数以适应新的任务或风格。\n\n2. **不改变任务能力**：RAG 通常不修改大语言模型的任务能力，而 Fine-Tuning 会增强模型对特定任务的能力。\n\n3. **适合外部知识更新**：对于需要频繁更新的外部知识，通常可以结合 RAG 使用，而 Fine-Tuning 通常不适用于这种场景。\n\n[2]",
+    "available_citations": {
+      "1": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "bd482f7e35137c81ff3dca8433e04f3a"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      }
+    },
+    "used_citations": {
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": null
+    },
+    "notes": ""
+  },
+  {
+    "id": "q014",
+    "question": "什么是 Kubernetes 的 Pod？",
+    "answerable": false,
+    "gold_chunk_ids": [],
+    "expected_facts": [],
+    "category": "out_of_scope",
+    "retrieved_chunk_ids": [
+      "8b7988318eb0284819a6d87d8b17170d",
+      "27191f3e8f5ef26070ae81429f358b60",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:attention.pdf | 第2页\n内容：token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的信息。\n\n[2] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "Kubernetes 的 Pod 是 Kubernetes 中用于管理一组容器的最小工作单元。每个 Pod 包含一个或多个运行在容器中的应用程序，这些容器可以共享资源，如网络、存储等。Pod 的主要目的是将应用程序部署到一个可管理的环境中，以便于自动化管理、扩展和维护。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "8b7988318eb0284819a6d87d8b17170d"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "8b7988318eb0284819a6d87d8b17170d"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": null
+    },
+    "notes": ""
+  }
+]
