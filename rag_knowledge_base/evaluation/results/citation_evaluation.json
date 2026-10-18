@@ -1,0 +1,210 @@
+[
+  {
+    "id": "q001",
+    "question": "Multi-Head Attention 为什么要使用多个注意力头？",
+    "answerable": true,
+    "answer": "Multi-Head Attention 之所以使用多个注意力头，是因为它能够从不同的表示子空间中学习信息，从而让模型能够关注不同类型的关系。例如，不同的注意力头可以分别关注相邻 token 或长距离依赖关系，从而提升模型的表达能力。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "attention.pdf",
+        "evidence_text": "[1] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通",
+        "support": 2,
+        "notes": "完整支持 Multi-Head Attention 结论"
+      }
+    }
+  },
+  {
+    "id": "q002",
+    "question": "Causal Mask 的作用是什么？",
+    "answerable": true,
+    "answer": "Causal Mask 的作用是防止当前位置看到未来 token，因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的 token。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "attention.pdf",
+        "evidence_text": "[1] 来源:attention.pdf | 第2页\n内容：Scaled Dot-Product Attention\n首先计算：\nQK^T\n它可以得到 Query 与各个 Key 之间的匹配程度。\n随后除以：\nsqrt(d_k)\n这样做是为了避免维度较大时点积数值过大，从而使 Softmax 进入梯度较小的区域。\n然后经过 Softmax：\nsoftmax(QK^T / sqrt(d_k))\n得到注意力权重。\n最后用这些权重对 V 进行加权求和，得到 Attention 输出。\nCausal Mask\n在 Decoder-Only 大语言模型中，通常还会加入 Causal Mask。\n它的作用是防止当前位置看到未来 token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的",
+        "support": 2,
+        "notes": "支持 Causal Mask 的作用"
+      }
+    }
+  },
+  {
+    "id": "q003",
+    "question": "Scaled Dot-Product Attention 的计算步骤是什么？",
+    "answerable": true,
+    "answer": "Scaled Dot-Product Attention 的计算步骤如下：\n\n1. 计算 QK^T，其中 Q 是 Query，K 是 Key，得到 Query 与各个 Key 之间的匹配程度。\n2. 除以 sqrt(d_k)，以避免维度较大时点积数值过大，从而使得 Softmax 进入梯度较小的区域。\n3. 进行 Softmax，得到注意力权重。\n4. 使用这些权重对 V 进行加权求和，得到 Attention 输出。\n\n根据参考资料 [1]，这些步骤是Scaled Dot-Product Attention的核心计算过程。",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "attention.pdf",
+        "evidence_text": "[1] 来源:attention.pdf | 第2页\n内容：Scaled Dot-Product Attention\n首先计算：\nQK^T\n它可以得到 Query 与各个 Key 之间的匹配程度。\n随后除以：\nsqrt(d_k)\n这样做是为了避免维度较大时点积数值过大，从而使 Softmax 进入梯度较小的区域。\n然后经过 Softmax：\nsoftmax(QK^T / sqrt(d_k))\n得到注意力权重。\n最后用这些权重对 V 进行加权求和，得到 Attention 输出。\nCausal Mask\n在 Decoder-Only 大语言模型中，通常还会加入 Causal Mask。\n它的作用是防止当前位置看到未来 token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的",
+        "support": 2,
+        "notes": "支持完整 Attention 计算步骤"
+      }
+    }
+  },
+  {
+    "id": "q004",
+    "question": "Self-Attention 中的 Q、K、V 来自哪里？",
+    "answerable": true,
+    "answer": "Self-Attention 中的 Q、K、V 都来自同一个输入序列。假设输入经过线性映射得到 Q、K、V，其中 Q 表示 Query，K 表示 Key，V 表示 Value。Q 和 K 的点积用于衡量不同 token 之间的相关程度。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "attention.pdf",
+        "evidence_text": "[1] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。",
+        "support": 2,
+        "notes": "支持 Self-Attention 的 Q、K、V 来源"
+      }
+    }
+  },
+  {
+    "id": "q005",
+    "question": "Transformer Block 通常包含哪些组件？",
+    "answerable": true,
+    "answer": "Transformer Block 通常包含以下组件：Attention、Feed Forward Network、Residual Connection 和Normalization。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "attention.pdf",
+        "evidence_text": "[1] 来源:attention.pdf | 第3页\n内容：注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通 常 由 Attention 、 Feed Forward Network 、 Residual Connection 和\nNormalization 等部分共同组成。\nAttention 负责 token 之间的信息交互，而 Feed Forward Network 则进一步处理每个 token\n的表示。",
+        "support": 2,
+        "notes": "支持 Transformer Block 组件"
+      }
+    }
+  },
+  {
+    "id": "q006",
+    "question": "相比传统 RNN，Transformer 为什么具有较好的训练并行性？",
+    "answerable": true,
+    "answer": "相比传统 RNN，Transformer 具有较好的训练并行性，因为其基于 Attention 机制，能够将信息并行处理，从而在训练时具有较好的并行计算能力。这使得模型在处理大规模数据时能够更高效地进行计算，从而提升训练效率。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "transformer.md",
+        "evidence_text": "[1] 来源:transformer.md\n内容：# Transformer\n\nTransformer 是一种基于 Attention 机制的神经网络架构。\n\n与传统 RNN 不同，Transformer 不需要按照时间顺序逐个处理 token，因此在训练时具有较好的并行计算能力。\n\n## Token Embedding\n\n输入文本首先经过 Tokenizer，被转换成一系列 Token ID。\n\n例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]",
+        "support": 2,
+        "notes": "支持并行计算的主要结论"
+      }
+    }
+  },
+  {
+    "id": "q007",
+    "question": "输入文本在 Transformer 中如何转换成 Token ID？",
+    "answerable": true,
+    "answer": "输入文本首先经过 Tokenizer，被转换成一系列 Token ID。例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]\n```",
+    "citations": {}
+  },
+  {
+    "id": "q008",
+    "question": "一个基础 RAG 系统的处理流程是什么？",
+    "answerable": true,
+    "answer": "一个基础 RAG 系统的处理流程包括以下步骤：\n\n1. 用户提出问题。\n2. 系统将问题转换为查询向量。\n3. 系统使用向量索引检索与问题最相关的 Top-K 信息。\n4. 这些检索到的信息作为 Context 传递给大语言模型进行生成。\n\n根据参考资料 [1]，RAG 的基本流程是用户提出问题，系统进行检索，然后将检索结果作为 Context 传递给大语言模型生成答案。",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "rag.docx",
+        "evidence_text": "[1] 来源:rag.docx\n内容：RAG 学习笔记\n\nRAG 的全称是 Retrieval-Augmented Generation，即检索增强生成。\n\nRAG 的核心思想\n\n大语言模型本身的参数中不一定包含最新知识、企业内部知识或者用户自己的私人文档。\n\nRAG 不需要为了这些知识重新训练大语言模型，而是在用户提问之后，先从外部知识库中检索相关资料，再将检索结果放入 Context 中交给大语言模型生成答案。\n\nRAG 的基本流程\n\n一个基础 RAG 系统通常包括以下过程：\n\n用户提出 Question。\n\n系统将 Question 转换成 Query Embedding。\n\nRetriever 从向量索引中找到与问题最相关的 Top-K Chunks。\n\n这些 Chunks",
+        "support": 2,
+        "notes": "支持实际回答的 RAG 基础流程"
+      }
+    }
+  },
+  {
+    "id": "q009",
+    "question": "RAG 与 Fine-Tuning 的主要区别是什么？",
+    "answerable": true,
+    "answer": "RAG（Retrieval-Augmented Generation）与 Fine-Tuning 的主要区别包括：\n\n1. **不修改模型参数**：RAG 不修改大语言模型的参数，而 Fine-Tuning 会修改模型参数以适应新的任务或风格。\n\n2. **不改变任务能力**：RAG 通常不修改大语言模型的任务能力，而 Fine-Tuning 会增强模型对特定任务的能力。\n\n3. **适合外部知识更新**：对于需要频繁更新的外部知识，通常可以结合 RAG 使用，而 Fine-Tuning 通常不适用于这种场景。\n\n[2]",
+    "citations": {
+      "2": {
+        "valid": true,
+        "source": "lora.txt",
+        "evidence_text": "[2] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+        "support": 1,
+        "notes": "仅支持部分 RAG 适用场景判断"
+      }
+    }
+  },
+  {
+    "id": "q010",
+    "question": "LoRA 如何利用低秩矩阵进行参数高效微调？",
+    "answerable": true,
+    "answer": "LoRA（Low-Rank Adaptation）通过冻结原始模型参数 $ W $，并在部分线性层旁边加入两个低秩矩阵 $ A $ 和 $ B $，表示为 $ W' = W + (alpha / r)BA $，其中 $ r $ 表示低秩矩阵的秩。$ r $ 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "lora.txt",
+        "evidence_text": "[1] 来源:lora.txt\n内容：LoRA 是一种参数高效微调方法，全称为 Low-Rank Adaptation。\n\n在传统 Full Fine-Tuning 中，模型的大量参数都会参与训练，因此需要保存大量梯度和优化器状态，显存和计算成本都比较高。\n\nLoRA 的核心思想是冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B。\n\n可以表示为：\n\nW' = W + BA\n\n实际使用中通常还会加入缩放系数：\n\nW' = W + (alpha / r)BA\n\n其中，r 表示低秩矩阵的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增",
+        "support": 2,
+        "notes": "支持 LoRA 低秩微调原理"
+      }
+    }
+  },
+  {
+    "id": "q011",
+    "question": "LoRA 中的 r 和 lora_alpha 分别有什么作用？",
+    "answerable": true,
+    "answer": "在 LoRA 中：\n\n- **r** 表示低秩矩阵的秩，r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\n- **lora_alpha** 用于控制 LoRA 分支的缩放强度，常见的缩放系数为 alpha / r。\n\n因此，r 和 lora_alpha 的作用分别如下：\n\n- **r**：影响 LoRA 可以训练的参数数量和表达能力，同时增加显存和计算开销。\n\n- **lora_alpha**：用于控制 LoRA 分支的缩放强度，影响 LoRA 的效果和参数数量。",
+    "citations": {}
+  },
+  {
+    "id": "q012",
+    "question": "LoRA 相比 Full Fine-Tuning 有哪些优势？",
+    "answerable": true,
+    "answer": "相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n- 需要训练的参数更少。\n- 显存占用更低。\n- 训练速度更快。\n- Adapter 文件更小。\n- 可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\n[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "lora.txt",
+        "evidence_text": "[1] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用",
+        "support": 2,
+        "notes": "支持 LoRA 的主要优势"
+      }
+    }
+  },
+  {
+    "id": "q013",
+    "question": "QLoRA 如何进一步降低显存占用？",
+    "answerable": true,
+    "answer": "QLoRA 更进一步降低显存占用，因为它通过冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B，从而减少显存占用。具体来说，QLoRA 通常会先将冻结的 Base Model 进行低比特量化（例如使用 4-bit 权重），然后继续训练 LoRA Adapter，从而进一步降低显存占用。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "lora.txt",
+        "evidence_text": "[1] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用",
+        "support": 2,
+        "notes": "支持 QLoRA 的低比特量化"
+      }
+    }
+  },
+  {
+    "id": "q014",
+    "question": "什么是 Kubernetes 的 Pod？",
+    "answerable": false,
+    "answer": "Kubernetes 的 Pod 是 Kubernetes 中用于管理一组容器的最小工作单元。每个 Pod 包含一个或多个运行在容器中的应用程序，这些容器可以共享资源，如网络、存储等。Pod 的主要目的是将应用程序部署到一个可管理的环境中，以便于自动化管理、扩展和维护。[1]",
+    "citations": {
+      "1": {
+        "valid": true,
+        "source": "attention.pdf",
+        "evidence_text": "[1] 来源:attention.pdf | 第2页\n内容：token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的信息。",
+        "support": 0,
+        "notes": "Attention 文本无法支持 Kubernetes Pod"
+      }
+    }
+  },
+  {
+    "id": "q015",
+    "question": "PostgreSQL 的 MVCC 是如何工作的？",
+    "answerable": false,
+    "answer": "根据当前提供的知识库资料，无法确定答案。",
+    "citations": {}
+  },
+  {
+    "id": "q016",
+    "question": "CNN 卷积层输出尺寸的计算公式是什么？",
+    "answerable": false,
+    "answer": "根据当前提供的知识库资料，无法确定答案。",
+    "citations": {}
+  }
+]
