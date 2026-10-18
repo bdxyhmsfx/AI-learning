@@ -1,0 +1,820 @@
+[
+  {
+    "id": "q001",
+    "question": "Multi-Head Attention 为什么要使用多个注意力头？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "b64aad9f27aa90d2d147557050c2d2aa"
+    ],
+    "expected_facts": [
+      "不同注意力头可以学习不同表示子空间的信息",
+      "不同注意力头可以关注不同类型的关系"
+    ],
+    "category": "semantic",
+    "retrieved_chunk_ids": [
+      "b64aad9f27aa90d2d147557050c2d2aa",
+      "54ef72166af3cd482fcac084c7658a9b",
+      "27191f3e8f5ef26070ae81429f358b60"
+    ],
+    "context": "[1] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通\n\n[2] 来源:attention.pdf | 第3页\n内容：注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通 常 由 Attention 、 Feed Forward Network 、 Residual Connection 和\nNormalization 等部分共同组成。\nAttention 负责 token 之间的信息交互，而 Feed Forward Network 则进一步处理每个 token\n的表示。\n\n[3] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。",
+    "answer": "Multi-Head Attention 之所以使用多个注意力头，是因为它能够从不同的表示子空间中学习信息，从而让模型能够关注不同类型的关系。例如，不同的注意力头可以分别关注相邻 token 或长距离依赖关系，从而提升模型的表达能力。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "54ef72166af3cd482fcac084c7658a9b"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "完整解释多头学习不同表示子空间及关注不同关系，Context [1] 直接支持。"
+  },
+  {
+    "id": "q002",
+    "question": "Causal Mask 的作用是什么？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "fb46ee009583ae39a607b6d8f04202e7"
+    ],
+    "expected_facts": [
+      "防止当前位置看到未来 Token"
+    ],
+    "category": "semantic",
+    "retrieved_chunk_ids": [
+      "fb46ee009583ae39a607b6d8f04202e7",
+      "bd482f7e35137c81ff3dca8433e04f3a",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:attention.pdf | 第2页\n内容：Scaled Dot-Product Attention\n首先计算：\nQK^T\n它可以得到 Query 与各个 Key 之间的匹配程度。\n随后除以：\nsqrt(d_k)\n这样做是为了避免维度较大时点积数值过大，从而使 Softmax 进入梯度较小的区域。\n然后经过 Softmax：\nsoftmax(QK^T / sqrt(d_k))\n得到注意力权重。\n最后用这些权重对 V 进行加权求和，得到 Attention 输出。\nCausal Mask\n在 Decoder-Only 大语言模型中，通常还会加入 Causal Mask。\n它的作用是防止当前位置看到未来 token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的\n\n[2] 来源:rag.docx\n内容：Query Embedding。\n\nRetriever 从向量索引中找到与问题最相关的 Top-K Chunks。\n\n这些 Chunks 被组合成 Context。\n\nContext 和 Question 被共同放入 Prompt。\n\nLLM 根据 Prompt 生成最终答案。\n\nRetriever\n\nRetriever 的作用是从知识库中找到与用户问题最相关的内容。\n\nRetriever 本身通常不会负责生成自然语言答案。\n\n一个基础 Retriever 可以由 Embedding Model、Vector Index、Similarity Search 和 Top-K Retrieval 等部分组成。\n\nFAISS 可以作为 Retriever 中的向量搜索组件。\n\nRAG 与 Fine-Tuning 的区别\n\nFine-Tuning 会修改模型参数，使模型学习新的行为、风格或特定任务能力。\n\nRAG 通常不修改大语言模\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "Causal Mask 的作用是防止当前位置看到未来 token，因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的 token。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "fb46ee009583ae39a607b6d8f04202e7"
+      },
+      "2": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "bd482f7e35137c81ff3dca8433e04f3a"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "fb46ee009583ae39a607b6d8f04202e7"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "正确解释 Causal Mask 防止看到未来 Token，Context [1] 明确支持。"
+  },
+  {
+    "id": "q003",
+    "question": "Scaled Dot-Product Attention 的计算步骤是什么？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "fb46ee009583ae39a607b6d8f04202e7"
+    ],
+    "expected_facts": [
+      "计算 Q 和 K 的点积",
+      "除以 sqrt(d_k)",
+      "经过 Softmax 得到注意力权重",
+      "使用注意力权重对 V 加权求和"
+    ],
+    "category": "process",
+    "retrieved_chunk_ids": [
+      "fb46ee009583ae39a607b6d8f04202e7",
+      "27191f3e8f5ef26070ae81429f358b60",
+      "b64aad9f27aa90d2d147557050c2d2aa"
+    ],
+    "context": "[1] 来源:attention.pdf | 第2页\n内容：Scaled Dot-Product Attention\n首先计算：\nQK^T\n它可以得到 Query 与各个 Key 之间的匹配程度。\n随后除以：\nsqrt(d_k)\n这样做是为了避免维度较大时点积数值过大，从而使 Softmax 进入梯度较小的区域。\n然后经过 Softmax：\nsoftmax(QK^T / sqrt(d_k))\n得到注意力权重。\n最后用这些权重对 V 进行加权求和，得到 Attention 输出。\nCausal Mask\n在 Decoder-Only 大语言模型中，通常还会加入 Causal Mask。\n它的作用是防止当前位置看到未来 token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的\n\n[2] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。\n\n[3] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通",
+    "answer": "Scaled Dot-Product Attention 的计算步骤如下：\n\n1. 计算 QK^T，其中 Q 是 Query，K 是 Key，得到 Query 与各个 Key 之间的匹配程度。\n2. 除以 sqrt(d_k)，以避免维度较大时点积数值过大，从而使得 Softmax 进入梯度较小的区域。\n3. 进行 Softmax，得到注意力权重。\n4. 使用这些权重对 V 进行加权求和，得到 Attention 输出。\n\n根据参考资料 [1]，这些步骤是Scaled Dot-Product Attention的核心计算过程。",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "fb46ee009583ae39a607b6d8f04202e7"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "fb46ee009583ae39a607b6d8f04202e7"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "QK^T、缩放、Softmax、加权 V 四步齐全，Context [1] 支持。"
+  },
+  {
+    "id": "q004",
+    "question": "Self-Attention 中的 Q、K、V 来自哪里？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "27191f3e8f5ef26070ae81429f358b60"
+    ],
+    "expected_facts": [
+      "Query、Key、Value 都来自同一个输入序列"
+    ],
+    "category": "concept",
+    "retrieved_chunk_ids": [
+      "27191f3e8f5ef26070ae81429f358b60",
+      "b64aad9f27aa90d2d147557050c2d2aa",
+      "fb46ee009583ae39a607b6d8f04202e7"
+    ],
+    "context": "[1] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。\n\n[2] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通\n\n[3] 来源:attention.pdf | 第2页\n内容：Scaled Dot-Product Attention\n首先计算：\nQK^T\n它可以得到 Query 与各个 Key 之间的匹配程度。\n随后除以：\nsqrt(d_k)\n这样做是为了避免维度较大时点积数值过大，从而使 Softmax 进入梯度较小的区域。\n然后经过 Softmax：\nsoftmax(QK^T / sqrt(d_k))\n得到注意力权重。\n最后用这些权重对 V 进行加权求和，得到 Attention 输出。\nCausal Mask\n在 Decoder-Only 大语言模型中，通常还会加入 Causal Mask。\n它的作用是防止当前位置看到未来 token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的",
+    "answer": "Self-Attention 中的 Q、K、V 都来自同一个输入序列。假设输入经过线性映射得到 Q、K、V，其中 Q 表示 Query，K 表示 Key，V 表示 Value。Q 和 K 的点积用于衡量不同 token 之间的相关程度。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "fb46ee009583ae39a607b6d8f04202e7"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "说明 Q/K/V 来自同一输入序列，额外解释也与 Context 一致。"
+  },
+  {
+    "id": "q005",
+    "question": "Transformer Block 通常包含哪些组件？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "54ef72166af3cd482fcac084c7658a9b"
+    ],
+    "expected_facts": [
+      "Attention",
+      "Feed Forward Network",
+      "Residual Connection",
+      "Normalization"
+    ],
+    "category": "concept",
+    "retrieved_chunk_ids": [
+      "54ef72166af3cd482fcac084c7658a9b",
+      "0a0f9a7ff5f6517df41a4794bb06b530",
+      "b64aad9f27aa90d2d147557050c2d2aa"
+    ],
+    "context": "[1] 来源:attention.pdf | 第3页\n内容：注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通 常 由 Attention 、 Feed Forward Network 、 Residual Connection 和\nNormalization 等部分共同组成。\nAttention 负责 token 之间的信息交互，而 Feed Forward Network 则进一步处理每个 token\n的表示。\n\n[2] 来源:transformer.md\n内容：# Transformer\n\nTransformer 是一种基于 Attention 机制的神经网络架构。\n\n与传统 RNN 不同，Transformer 不需要按照时间顺序逐个处理 token，因此在训练时具有较好的并行计算能力。\n\n## Token Embedding\n\n输入文本首先经过 Tokenizer，被转换成一系列 Token ID。\n\n例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]\n\n[3] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通",
+    "answer": "Transformer Block 通常包含以下组件：Attention、Feed Forward Network、Residual Connection 和Normalization。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "54ef72166af3cd482fcac084c7658a9b"
+      },
+      "2": {
+        "source": "transformer.md",
+        "page": null,
+        "chunk_id": "0a0f9a7ff5f6517df41a4794bb06b530"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "54ef72166af3cd482fcac084c7658a9b"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "完整列出 Attention、FFN、残差、归一化四组件，Context [1] 支持。"
+  },
+  {
+    "id": "q006",
+    "question": "相比传统 RNN，Transformer 为什么具有较好的训练并行性？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "0a0f9a7ff5f6517df41a4794bb06b530"
+    ],
+    "expected_facts": [
+      "Transformer 不需要按照时间顺序逐个处理 Token"
+    ],
+    "category": "semantic",
+    "retrieved_chunk_ids": [
+      "0a0f9a7ff5f6517df41a4794bb06b530",
+      "1fac32c06b221405b1b83d45c900a56e",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:transformer.md\n内容：# Transformer\n\nTransformer 是一种基于 Attention 机制的神经网络架构。\n\n与传统 RNN 不同，Transformer 不需要按照时间顺序逐个处理 token，因此在训练时具有较好的并行计算能力。\n\n## Token Embedding\n\n输入文本首先经过 Tokenizer，被转换成一系列 Token ID。\n\n例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]\n\n[2] 来源:lora.txt\n内容：的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\nlora_alpha 用于控制 LoRA 分支的缩放强度。常见的缩放系数为 alpha / r。\n\nlora_dropout 表示 LoRA 分支中的 Dropout 概率，可以起到一定的正则化作用。\n\ntarget_modules 用来指定 LoRA 加到模型中的哪些模块。例如在 Transformer 中，可以把 LoRA 加到 q_proj、v_proj 等 Attention 投影层。\n\nLoRA 训练时，原始 Base Model 的参数通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "相比传统 RNN，Transformer 具有较好的训练并行性，因为其基于 Attention 机制，能够将信息并行处理，从而在训练时具有较好的并行计算能力。这使得模型在处理大规模数据时能够更高效地进行计算，从而提升训练效率。[1]",
+    "available_citations": {
+      "1": {
+        "source": "transformer.md",
+        "page": null,
+        "chunk_id": "0a0f9a7ff5f6517df41a4794bb06b530"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "1fac32c06b221405b1b83d45c900a56e"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "transformer.md",
+        "page": null,
+        "chunk_id": "0a0f9a7ff5f6517df41a4794bb06b530"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 1,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "回答强调 Attention 并行处理，但未明确说明无需按时间顺序逐个处理 Token；主要结论能由 Context 支持。"
+  },
+  {
+    "id": "q007",
+    "question": "输入文本在 Transformer 中如何转换成 Token ID？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "0a0f9a7ff5f6517df41a4794bb06b530"
+    ],
+    "expected_facts": [
+      "输入文本经过 Tokenizer 转换成一系列 Token ID"
+    ],
+    "category": "process",
+    "retrieved_chunk_ids": [
+      "0a0f9a7ff5f6517df41a4794bb06b530",
+      "27191f3e8f5ef26070ae81429f358b60",
+      "54ef72166af3cd482fcac084c7658a9b"
+    ],
+    "context": "[1] 来源:transformer.md\n内容：# Transformer\n\nTransformer 是一种基于 Attention 机制的神经网络架构。\n\n与传统 RNN 不同，Transformer 不需要按照时间顺序逐个处理 token，因此在训练时具有较好的并行计算能力。\n\n## Token Embedding\n\n输入文本首先经过 Tokenizer，被转换成一系列 Token ID。\n\n例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]\n\n[2] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。\n\n[3] 来源:attention.pdf | 第3页\n内容：注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通 常 由 Attention 、 Feed Forward Network 、 Residual Connection 和\nNormalization 等部分共同组成。\nAttention 负责 token 之间的信息交互，而 Feed Forward Network 则进一步处理每个 token\n的表示。",
+    "answer": "输入文本首先经过 Tokenizer，被转换成一系列 Token ID。例如：\n\n```text\n\"我喜欢学习AI\"\n↓\nTokenizer\n↓\n[Token1, Token2, Token3, ...]\n```",
+    "available_citations": {
+      "1": {
+        "source": "transformer.md",
+        "page": null,
+        "chunk_id": "0a0f9a7ff5f6517df41a4794bb06b530"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "54ef72166af3cd482fcac084c7658a9b"
+      }
+    },
+    "used_citations": {},
+    "invalid_ids": [],
+    "has_citations": false,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "正确描述 Tokenizer 转换为 Token ID；缺少引用编号是 Citation Evaluation 问题，不在本节扣分。"
+  },
+  {
+    "id": "q008",
+    "question": "一个基础 RAG 系统的处理流程是什么？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "0785e3b3946ec199e014ff01acb61799",
+      "bd482f7e35137c81ff3dca8433e04f3a"
+    ],
+    "expected_facts": [
+      "用户提出问题并生成 Query Embedding",
+      "Retriever 检索相关 Chunk",
+      "将检索结果组合成 Context",
+      "Context 和问题进入 Prompt",
+      "LLM 生成答案"
+    ],
+    "category": "process",
+    "retrieved_chunk_ids": [
+      "0785e3b3946ec199e014ff01acb61799",
+      "103f6c6e89032cd9713c198908d7f0f5",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:rag.docx\n内容：RAG 学习笔记\n\nRAG 的全称是 Retrieval-Augmented Generation，即检索增强生成。\n\nRAG 的核心思想\n\n大语言模型本身的参数中不一定包含最新知识、企业内部知识或者用户自己的私人文档。\n\nRAG 不需要为了这些知识重新训练大语言模型，而是在用户提问之后，先从外部知识库中检索相关资料，再将检索结果放入 Context 中交给大语言模型生成答案。\n\nRAG 的基本流程\n\n一个基础 RAG 系统通常包括以下过程：\n\n用户提出 Question。\n\n系统将 Question 转换成 Query Embedding。\n\nRetriever 从向量索引中找到与问题最相关的 Top-K Chunks。\n\n这些 Chunks\n\n[2] 来源:rag.docx\n内容：使模型学习新的行为、风格或特定任务能力。\n\nRAG 通常不修改大语言模型的参数，而是在推理阶段临时提供外部知识。\n\n因此，如果知识经常发生变化，RAG 通常比重新训练模型更加方便。\n\nRAG 的局限\n\nRAG 的最终回答质量很大程度上依赖检索质量。\n\n如果 Retriever 没有找到正确内容，即使大语言模型能力很强，也可能无法得到正确答案。\n\n因此真实 RAG 系统通常还会加入 Hybrid Search、Reranker 和 Evaluation。\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "一个基础 RAG 系统的处理流程包括以下步骤：\n\n1. 用户提出问题。\n2. 系统将问题转换为查询向量。\n3. 系统使用向量索引检索与问题最相关的 Top-K 信息。\n4. 这些检索到的信息作为 Context 传递给大语言模型进行生成。\n\n根据参考资料 [1]，RAG 的基本流程是用户提出问题，系统进行检索，然后将检索结果作为 Context 传递给大语言模型生成答案。",
+    "available_citations": {
+      "1": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "0785e3b3946ec199e014ff01acb61799"
+      },
+      "2": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "103f6c6e89032cd9713c198908d7f0f5"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "0785e3b3946ec199e014ff01acb61799"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 1,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "主要流程基本正确，但未明确交代 Context 与 Question 共同构建 Prompt；已陈述内容有 Context 支持。"
+  },
+  {
+    "id": "q009",
+    "question": "RAG 与 Fine-Tuning 的主要区别是什么？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "bd482f7e35137c81ff3dca8433e04f3a",
+      "103f6c6e89032cd9713c198908d7f0f5"
+    ],
+    "expected_facts": [
+      "Fine-Tuning 会修改模型参数",
+      "RAG 通常不修改模型参数，而是在推理阶段提供外部知识"
+    ],
+    "category": "comparison",
+    "retrieved_chunk_ids": [
+      "bd482f7e35137c81ff3dca8433e04f3a",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb",
+      "487ab767c275f9d6760e864ea7e3014b"
+    ],
+    "context": "[1] 来源:rag.docx\n内容：Query Embedding。\n\nRetriever 从向量索引中找到与问题最相关的 Top-K Chunks。\n\n这些 Chunks 被组合成 Context。\n\nContext 和 Question 被共同放入 Prompt。\n\nLLM 根据 Prompt 生成最终答案。\n\nRetriever\n\nRetriever 的作用是从知识库中找到与用户问题最相关的内容。\n\nRetriever 本身通常不会负责生成自然语言答案。\n\n一个基础 Retriever 可以由 Embedding Model、Vector Index、Similarity Search 和 Top-K Retrieval 等部分组成。\n\nFAISS 可以作为 Retriever 中的向量搜索组件。\n\nRAG 与 Fine-Tuning 的区别\n\nFine-Tuning 会修改模型参数，使模型学习新的行为、风格或特定任务能力。\n\nRAG 通常不修改大语言模\n\n[2] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。\n\n[3] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用",
+    "answer": "RAG（Retrieval-Augmented Generation）与 Fine-Tuning 的主要区别包括：\n\n1. **不修改模型参数**：RAG 不修改大语言模型的参数，而 Fine-Tuning 会修改模型参数以适应新的任务或风格。\n\n2. **不改变任务能力**：RAG 通常不修改大语言模型的任务能力，而 Fine-Tuning 会增强模型对特定任务的能力。\n\n3. **适合外部知识更新**：对于需要频繁更新的外部知识，通常可以结合 RAG 使用，而 Fine-Tuning 通常不适用于这种场景。\n\n[2]",
+    "available_citations": {
+      "1": {
+        "source": "rag.docx",
+        "page": null,
+        "chunk_id": "bd482f7e35137c81ff3dca8433e04f3a"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      }
+    },
+    "used_citations": {
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 1,
+      "faithfulness": 1,
+      "abstention": null
+    },
+    "notes": "核心参数差别基本正确，但称 Fine-Tuning 通常不适用于频繁知识更新过于绝对；部分结论缺少充分 Context 证据，引用 [2] 不足以支持比较。"
+  },
+  {
+    "id": "q010",
+    "question": "LoRA 如何利用低秩矩阵进行参数高效微调？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "e7fe46dc794313b25bb6122dabee07e0"
+    ],
+    "expected_facts": [
+      "冻结原始模型参数 W",
+      "使用两个低秩矩阵 A 和 B",
+      "通过低秩矩阵的乘积形成权重更新"
+    ],
+    "category": "semantic",
+    "retrieved_chunk_ids": [
+      "e7fe46dc794313b25bb6122dabee07e0",
+      "1fac32c06b221405b1b83d45c900a56e",
+      "487ab767c275f9d6760e864ea7e3014b"
+    ],
+    "context": "[1] 来源:lora.txt\n内容：LoRA 是一种参数高效微调方法，全称为 Low-Rank Adaptation。\n\n在传统 Full Fine-Tuning 中，模型的大量参数都会参与训练，因此需要保存大量梯度和优化器状态，显存和计算成本都比较高。\n\nLoRA 的核心思想是冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B。\n\n可以表示为：\n\nW' = W + BA\n\n实际使用中通常还会加入缩放系数：\n\nW' = W + (alpha / r)BA\n\n其中，r 表示低秩矩阵的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增\n\n[2] 来源:lora.txt\n内容：的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\nlora_alpha 用于控制 LoRA 分支的缩放强度。常见的缩放系数为 alpha / r。\n\nlora_dropout 表示 LoRA 分支中的 Dropout 概率，可以起到一定的正则化作用。\n\ntarget_modules 用来指定 LoRA 加到模型中的哪些模块。例如在 Transformer 中，可以把 LoRA 加到 q_proj、v_proj 等 Attention 投影层。\n\nLoRA 训练时，原始 Base Model 的参数通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的\n\n[3] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用",
+    "answer": "LoRA（Low-Rank Adaptation）通过冻结原始模型参数 $ W $，并在部分线性层旁边加入两个低秩矩阵 $ A $ 和 $ B $，表示为 $ W' = W + (alpha / r)BA $，其中 $ r $ 表示低秩矩阵的秩。$ r $ 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。[1]",
+    "available_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e7fe46dc794313b25bb6122dabee07e0"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "1fac32c06b221405b1b83d45c900a56e"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e7fe46dc794313b25bb6122dabee07e0"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "冻结 W、引入 A/B、以 BA 形式构造权重更新均已覆盖，Context 支持。"
+  },
+  {
+    "id": "q011",
+    "question": "LoRA 中的 r 和 lora_alpha 分别有什么作用？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "1fac32c06b221405b1b83d45c900a56e"
+    ],
+    "expected_facts": [
+      "r 表示低秩矩阵的秩",
+      "lora_alpha 控制 LoRA 分支的缩放强度",
+      "常见缩放系数为 alpha / r"
+    ],
+    "category": "concept",
+    "retrieved_chunk_ids": [
+      "1fac32c06b221405b1b83d45c900a56e",
+      "e7fe46dc794313b25bb6122dabee07e0",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:lora.txt\n内容：的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\nlora_alpha 用于控制 LoRA 分支的缩放强度。常见的缩放系数为 alpha / r。\n\nlora_dropout 表示 LoRA 分支中的 Dropout 概率，可以起到一定的正则化作用。\n\ntarget_modules 用来指定 LoRA 加到模型中的哪些模块。例如在 Transformer 中，可以把 LoRA 加到 q_proj、v_proj 等 Attention 投影层。\n\nLoRA 训练时，原始 Base Model 的参数通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的\n\n[2] 来源:lora.txt\n内容：LoRA 是一种参数高效微调方法，全称为 Low-Rank Adaptation。\n\n在传统 Full Fine-Tuning 中，模型的大量参数都会参与训练，因此需要保存大量梯度和优化器状态，显存和计算成本都比较高。\n\nLoRA 的核心思想是冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B。\n\n可以表示为：\n\nW' = W + BA\n\n实际使用中通常还会加入缩放系数：\n\nW' = W + (alpha / r)BA\n\n其中，r 表示低秩矩阵的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "在 LoRA 中：\n\n- **r** 表示低秩矩阵的秩，r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\n- **lora_alpha** 用于控制 LoRA 分支的缩放强度，常见的缩放系数为 alpha / r。\n\n因此，r 和 lora_alpha 的作用分别如下：\n\n- **r**：影响 LoRA 可以训练的参数数量和表达能力，同时增加显存和计算开销。\n\n- **lora_alpha**：用于控制 LoRA 分支的缩放强度，影响 LoRA 的效果和参数数量。",
+    "available_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "1fac32c06b221405b1b83d45c900a56e"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e7fe46dc794313b25bb6122dabee07e0"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {},
+    "invalid_ids": [],
+    "has_citations": false,
+    "scores": {
+      "relevance": 2,
+      "correctness": 1,
+      "faithfulness": 1,
+      "abstention": null
+    },
+    "notes": "r 与 alpha/r 的核心解释正确，但附加声称 lora_alpha 影响可训练参数数量不准确，且 Context 无此依据；未附引用另在引用评价统计。"
+  },
+  {
+    "id": "q012",
+    "question": "LoRA 相比 Full Fine-Tuning 有哪些优势？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "487ab767c275f9d6760e864ea7e3014b"
+    ],
+    "expected_facts": [
+      "需要训练的参数更少",
+      "显存占用更低",
+      "训练速度更快",
+      "Adapter 文件更小"
+    ],
+    "category": "comparison",
+    "retrieved_chunk_ids": [
+      "487ab767c275f9d6760e864ea7e3014b",
+      "1fac32c06b221405b1b83d45c900a56e",
+      "e7fe46dc794313b25bb6122dabee07e0"
+    ],
+    "context": "[1] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用\n\n[2] 来源:lora.txt\n内容：的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增强，但同时显存和计算开销也会增加。\n\nlora_alpha 用于控制 LoRA 分支的缩放强度。常见的缩放系数为 alpha / r。\n\nlora_dropout 表示 LoRA 分支中的 Dropout 概率，可以起到一定的正则化作用。\n\ntarget_modules 用来指定 LoRA 加到模型中的哪些模块。例如在 Transformer 中，可以把 LoRA 加到 q_proj、v_proj 等 Attention 投影层。\n\nLoRA 训练时，原始 Base Model 的参数通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的\n\n[3] 来源:lora.txt\n内容：LoRA 是一种参数高效微调方法，全称为 Low-Rank Adaptation。\n\n在传统 Full Fine-Tuning 中，模型的大量参数都会参与训练，因此需要保存大量梯度和优化器状态，显存和计算成本都比较高。\n\nLoRA 的核心思想是冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B。\n\n可以表示为：\n\nW' = W + BA\n\n实际使用中通常还会加入缩放系数：\n\nW' = W + (alpha / r)BA\n\n其中，r 表示低秩矩阵的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增",
+    "answer": "相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n- 需要训练的参数更少。\n- 显存占用更低。\n- 训练速度更快。\n- Adapter 文件更小。\n- 可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\n[1]",
+    "available_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "1fac32c06b221405b1b83d45c900a56e"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e7fe46dc794313b25bb6122dabee07e0"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "四个预期优势均覆盖，附加的多 Adapter 优势也在 Context 中。"
+  },
+  {
+    "id": "q013",
+    "question": "QLoRA 如何进一步降低显存占用？",
+    "answerable": true,
+    "gold_chunk_ids": [
+      "487ab767c275f9d6760e864ea7e3014b"
+    ],
+    "expected_facts": [
+      "将冻结的 Base Model 进行低比特量化",
+      "在量化模型上训练 LoRA Adapter"
+    ],
+    "category": "semantic",
+    "retrieved_chunk_ids": [
+      "487ab767c275f9d6760e864ea7e3014b",
+      "e7fe46dc794313b25bb6122dabee07e0",
+      "54ef72166af3cd482fcac084c7658a9b"
+    ],
+    "context": "[1] 来源:lora.txt\n内容：通常保持冻结，主要训练新增的 A、B 矩阵。\n\n相比 Full Fine-Tuning，LoRA 的主要优势包括：\n\n需要训练的参数更少。\n显存占用更低。\n训练速度更快。\nAdapter 文件更小。\n可以为同一个 Base Model 保存多个不同任务的 Adapter。\n\nQLoRA 是 LoRA 的进一步扩展。它通常会先把冻结的 Base Model 进行低比特量化，例如使用 4-bit 权重，然后继续训练 LoRA Adapter，从而进一步降低显存占用。\n\nLoRA 更适合改变模型的行为、风格或特定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用\n\n[2] 来源:lora.txt\n内容：LoRA 是一种参数高效微调方法，全称为 Low-Rank Adaptation。\n\n在传统 Full Fine-Tuning 中，模型的大量参数都会参与训练，因此需要保存大量梯度和优化器状态，显存和计算成本都比较高。\n\nLoRA 的核心思想是冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B。\n\n可以表示为：\n\nW' = W + BA\n\n实际使用中通常还会加入缩放系数：\n\nW' = W + (alpha / r)BA\n\n其中，r 表示低秩矩阵的秩。r 越大，LoRA 可以训练的参数数量通常越多，表达能力也会增\n\n[3] 来源:attention.pdf | 第3页\n内容：注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通 常 由 Attention 、 Feed Forward Network 、 Residual Connection 和\nNormalization 等部分共同组成。\nAttention 负责 token 之间的信息交互，而 Feed Forward Network 则进一步处理每个 token\n的表示。",
+    "answer": "QLoRA 更进一步降低显存占用，因为它通过冻结原始模型参数 W，不直接更新 W，而是在部分线性层旁边加入两个低秩矩阵 A 和 B，从而减少显存占用。具体来说，QLoRA 通常会先将冻结的 Base Model 进行低比特量化（例如使用 4-bit 权重），然后继续训练 LoRA Adapter，从而进一步降低显存占用。[1]",
+    "available_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      },
+      "2": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e7fe46dc794313b25bb6122dabee07e0"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "54ef72166af3cd482fcac084c7658a9b"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "487ab767c275f9d6760e864ea7e3014b"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": 2,
+      "correctness": 2,
+      "faithfulness": 2,
+      "abstention": null
+    },
+    "notes": "明确说明冻结基础模型、4-bit 等低比特量化及训练 LoRA Adapter，Context 支持。"
+  },
+  {
+    "id": "q014",
+    "question": "什么是 Kubernetes 的 Pod？",
+    "answerable": false,
+    "gold_chunk_ids": [],
+    "expected_facts": [],
+    "category": "out_of_scope",
+    "retrieved_chunk_ids": [
+      "8b7988318eb0284819a6d87d8b17170d",
+      "27191f3e8f5ef26070ae81429f358b60",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:attention.pdf | 第2页\n内容：token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的信息。\n\n[2] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "Kubernetes 的 Pod 是 Kubernetes 中用于管理一组容器的最小工作单元。每个 Pod 包含一个或多个运行在容器中的应用程序，这些容器可以共享资源，如网络、存储等。Pod 的主要目的是将应用程序部署到一个可管理的环境中，以便于自动化管理、扩展和维护。[1]",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "8b7988318eb0284819a6d87d8b17170d"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "8b7988318eb0284819a6d87d8b17170d"
+      }
+    },
+    "invalid_ids": [],
+    "has_citations": true,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": 0
+    },
+    "notes": "知识库外问题未拒答；直接回答 Kubernetes Pod，并引用与该主题无关的 Attention 文本。"
+  },
+  {
+    "id": "q015",
+    "question": "PostgreSQL 的 MVCC 是如何工作的？",
+    "answerable": false,
+    "gold_chunk_ids": [],
+    "expected_facts": [],
+    "category": "out_of_scope",
+    "retrieved_chunk_ids": [
+      "8b7988318eb0284819a6d87d8b17170d",
+      "27191f3e8f5ef26070ae81429f358b60",
+      "e71c5ef7d31003c5c4ec303c74f5b0eb"
+    ],
+    "context": "[1] 来源:attention.pdf | 第2页\n内容：token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的信息。\n\n[2] 来源:attention.pdf | 第1页\n内容：Attention 学习资料\nAttention 是现代 Transformer 架构中的核心机制之一。\nAttention 的基本思想是：对于当前需要处理的信息，模型并不是平均关注所有输入，而是\n计算不同输入的重要程度，再根据重要程度进行加权。\nSelf-Attention\nSelf-Attention 表示 Query、Key 和 Value 都来自同一个输入序列。\n假设输入经过线性映射得到 Q、K、V，则 Scaled Dot-Product Attention 可以表示为：\nAttention(Q, K, V)\n=\nsoftmax(QK^T / sqrt(d_k))V\n其中 Q 表示 Query，K 表示 Key，V 表示 Value。\nQ 和 K 的点积用于衡量不同 token 之间的相关程度。\n\n[3] 来源:lora.txt\n内容：定任务能力，而对于需要频繁更新的外部知识，通常可以结合 RAG 使用。",
+    "answer": "根据当前提供的知识库资料，无法确定答案。",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "8b7988318eb0284819a6d87d8b17170d"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 1,
+        "chunk_id": "27191f3e8f5ef26070ae81429f358b60"
+      },
+      "3": {
+        "source": "lora.txt",
+        "page": null,
+        "chunk_id": "e71c5ef7d31003c5c4ec303c74f5b0eb"
+      }
+    },
+    "used_citations": {},
+    "invalid_ids": [],
+    "has_citations": false,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": 1
+    },
+    "notes": "知识库无 MVCC 相关依据，模型正确明确拒答。"
+  },
+  {
+    "id": "q016",
+    "question": "CNN 卷积层输出尺寸的计算公式是什么？",
+    "answerable": false,
+    "gold_chunk_ids": [],
+    "expected_facts": [],
+    "category": "out_of_scope",
+    "retrieved_chunk_ids": [
+      "fb46ee009583ae39a607b6d8f04202e7",
+      "b64aad9f27aa90d2d147557050c2d2aa",
+      "8b7988318eb0284819a6d87d8b17170d"
+    ],
+    "context": "[1] 来源:attention.pdf | 第2页\n内容：Scaled Dot-Product Attention\n首先计算：\nQK^T\n它可以得到 Query 与各个 Key 之间的匹配程度。\n随后除以：\nsqrt(d_k)\n这样做是为了避免维度较大时点积数值过大，从而使 Softmax 进入梯度较小的区域。\n然后经过 Softmax：\nsoftmax(QK^T / sqrt(d_k))\n得到注意力权重。\n最后用这些权重对 V 进行加权求和，得到 Attention 输出。\nCausal Mask\n在 Decoder-Only 大语言模型中，通常还会加入 Causal Mask。\n它的作用是防止当前位置看到未来 token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的\n\n[2] 来源:attention.pdf | 第3页\n内容：Multi-Head Attention\nMulti-Head Attention 会把 Attention 分成多个注意力头。\n每一个 Head 都有自己的 Q、K、V 投影，可以从不同的表示子空间学习信息。\n多个 Head 分别完成 Attention 计算后，会把输出进行拼接。\n随后再经过一次线性投影，得到 Multi-Head Attention 的最终输出。\n假设 hidden size 为 1024，一共有 8 个注意力头，则每个 Head 可以处理其中一部分表示\n空间。\nMulti-Head Attention 的优势在于，不同 Head 可以关注不同类型的关系。\n例如，有的 Head 可能更加关注相邻 token，有的 Head 可能更加关注长距离依赖关系。\nAttention 与 Transformer\nTransformer Block 通\n\n[3] 来源:attention.pdf | 第2页\n内容：token。\n因此模型在预测下一个 token 时，只能使用当前位置之前已经出现的信息。",
+    "answer": "根据当前提供的知识库资料，无法确定答案。",
+    "available_citations": {
+      "1": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "fb46ee009583ae39a607b6d8f04202e7"
+      },
+      "2": {
+        "source": "attention.pdf",
+        "page": 3,
+        "chunk_id": "b64aad9f27aa90d2d147557050c2d2aa"
+      },
+      "3": {
+        "source": "attention.pdf",
+        "page": 2,
+        "chunk_id": "8b7988318eb0284819a6d87d8b17170d"
+      }
+    },
+    "used_citations": {},
+    "invalid_ids": [],
+    "has_citations": false,
+    "scores": {
+      "relevance": null,
+      "correctness": null,
+      "faithfulness": null,
+      "abstention": 1
+    },
+    "notes": "知识库无 CNN 卷积输出尺寸公式，模型正确明确拒答。"
+  }
+]

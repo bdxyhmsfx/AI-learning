@@ -13,7 +13,7 @@ from rag_knowledge_base.vector_store.qdrant_store import client
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 EVAL_DIR = Path(__file__).resolve().parent
-TEST_MODE = True
+TEST_MODE = False
 if TEST_MODE:
     selected_ids = {"q001", "q008", "q009", "q014"}
     output_path = EVAL_DIR / "results" / "generation_smoke.json"
