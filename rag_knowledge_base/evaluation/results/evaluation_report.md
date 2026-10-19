@@ -3,7 +3,7 @@
 生成时间：2026-10-19T15:25:45+08:00  
 知识库：attention.pdf、rag.docx、transformer.md、lora.txt（当前测试版本）  
 模型：all-MiniLM-L6-v2 / BAAI/bge-reranker-base / Qwen3-0.6B  
-代码版本：请在正式归档时补充 `git rev-parse HEAD` 的输出。  
+代码版本：8280d0b96c2167b299633938bff846243e99fd91
 运行环境：Python 3.10.11；Windows-10-10.0.26200-SP0
 
 ## 1. 数据与实验设置
