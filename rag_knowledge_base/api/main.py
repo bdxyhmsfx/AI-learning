@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI,Request
+from fastapi import FastAPI, Request, HTTPException
 from rag_knowledge_base.api.schemas import RAGResponse, RAGRequest
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI):
         print("===== RAG 服务已关闭 =====")
 
 
-app = FastAPI(title="RAG Knowledge Base API", version="0.1.0",lifespan=lifespan)
+app = FastAPI(title="RAG Knowledge Base API", version="0.1.0", lifespan=lifespan)
 
 
 @app.get("/hello")
@@ -75,9 +75,24 @@ def demo_query(request: RAGRequest):
         "invalid_ids": [],
         "has_citations": False
     }
+
+
 @app.get("/init-status")
 def init_status(request: Request):
     return {
-        "ready":request.app.state.ready,
-        "chunk_count":len(request.app.state.all_chunks)
+        "ready": request.app.state.ready,
+        "chunk_count": len(request.app.state.all_chunks)
     }
+
+
+@app.post("/query", response_model=RAGResponse)
+def query_rag(data: RAGRequest, request: Request):
+    state = request.app.state
+    if not getattr(state, "ready", False):
+        raise HTTPException(status_code=503, detail="RAG 服务尚未就绪")
+    result = state.rag_pipeline(
+        query=data.query,
+        all_chunks=state.all_chunks,
+        bm25=state.bm25
+    )
+    return result
