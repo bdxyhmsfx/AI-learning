@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI, Request, HTTPException
 from rag_knowledge_base.api.schemas import RAGResponse, RAGRequest
+import logging
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -85,14 +86,30 @@ def init_status(request: Request):
     }
 
 
+@app.get("/health")
+def health(request: Request):
+    state = request.app.state
+    if not getattr(state, "ready", False):
+        raise HTTPException(status_code=503, detail="RAG 服务尚未就绪")
+    return {
+        "status": "ready",
+        "chunk_count": len(state.all_chunks)
+    }
+
+
 @app.post("/query", response_model=RAGResponse)
 def query_rag(data: RAGRequest, request: Request):
     state = request.app.state
     if not getattr(state, "ready", False):
         raise HTTPException(status_code=503, detail="RAG 服务尚未就绪")
-    result = state.rag_pipeline(
-        query=data.query,
-        all_chunks=state.all_chunks,
-        bm25=state.bm25
-    )
+    try:
+        result = state.rag_pipeline(
+            query=data.query,
+            all_chunks=state.all_chunks,
+            bm25=state.bm25
+        )
+    except Exception as e:
+        logger = logging.getLogger(__name__)
+        logger.exception("RAG 问答过程中发生异常")
+        raise HTTPException(status_code=500, detail="RAG 查询处理失败，请稍后重试")from e
     return result
