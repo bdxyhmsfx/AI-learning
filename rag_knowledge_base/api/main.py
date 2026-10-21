@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request, HTTPException
 from rag_knowledge_base.api.schemas import RAGResponse, RAGRequest
 import logging
 
+logger = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -109,7 +110,6 @@ def query_rag(data: RAGRequest, request: Request):
             bm25=state.bm25
         )
     except Exception as e:
-        logger = logging.getLogger(__name__)
         logger.exception("RAG 问答过程中发生异常")
         raise HTTPException(status_code=500, detail="RAG 查询处理失败，请稍后重试")from e
     return result
