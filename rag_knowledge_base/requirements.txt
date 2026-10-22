@@ -1,0 +1,32 @@
+
+# RAG Knowledge Base
+# Python 3.10
+
+# ===== FastAPI Service =====
+fastapi==0.147.0
+uvicorn==0.54.0
+pydantic==2.13.5
+
+# ===== API Testing =====
+requests==2.34.2
+httpx==0.28.1
+pytest==9.1.1
+
+# ===== Deep Learning & LLM =====
+torch==2.14.0
+transformers==5.17.0
+sentence-transformers==6.1.0
+
+# ===== Vector Database =====
+qdrant-client==1.19.1
+
+# ===== Hybrid Retrieval =====
+rank-bm25==0.2.2
+jieba==0.42.1
+
+# ===== Document Loading =====
+pypdf==6.19.0
+python-docx==1.2.0
+
+# ===== Data Processing =====
+numpy==1.26.4
