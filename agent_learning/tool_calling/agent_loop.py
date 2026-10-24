@@ -44,6 +44,11 @@ def run_tool_conversation(query, max_rounds=5, max_tool_calls=2, allow_parallel=
         if not message.tool_calls:
             print("最终的回答：", message.content)
             return message.content
+        if round_index == max_rounds:
+            raise RuntimeError(
+                f"已经达到最大模型请求轮数 {max_rounds}，"
+                "无法继续执行新的 Tool Call"
+            )
         new_calls = len(message.tool_calls)
         if total_tool_calls + new_calls > max_tool_calls:
             raise RuntimeError(f"工具调用次数超过上限：{max_tool_calls}")
