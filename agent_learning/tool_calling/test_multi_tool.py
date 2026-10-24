@@ -26,10 +26,11 @@ def to_chat_tool(schema):
 tools = [to_chat_tool(multiply_tool), to_chat_tool(get_order_status_tool)]
 
 
-def run_tool_conversation(query, max_rounds=5, allow_parallel=True):
+def run_tool_conversation(query, max_rounds=5, max_tool_calls=2, allow_parallel=True):
     messages = [{
         "role": "user", "content": query
     }]
+    total_tool_calls = 0
     for round_index in range(1, max_rounds + 1):
         print(f"\n========== 第 {round_index} 轮 ==========")
         response = client.chat.completions.create(
@@ -43,6 +44,12 @@ def run_tool_conversation(query, max_rounds=5, allow_parallel=True):
         if not message.tool_calls:
             print("最终的回答：", message.content)
             return message.content
+        new_calls = len(message.tool_calls)
+        if total_tool_calls + new_calls > max_tool_calls:
+            raise RuntimeError(f"工具调用次数超过上限：{max_tool_calls}")
+        total_tool_calls += new_calls
+        print("累计工具调用次数：", total_tool_calls)
+
         messages.append(message.model_dump(exclude_none=True))
         print("本轮工具调用数量：", len(message.tool_calls))
         for tool_call in message.tool_calls:
@@ -62,9 +69,11 @@ def run_tool_conversation(query, max_rounds=5, allow_parallel=True):
                 "content": json.dumps(result, ensure_ascii=False)
             })
     raise RuntimeError(f"达到最大模型请求轮数 {max_rounds}，仍未获得最终回答")
+
+
 if __name__ == "__main__":
     query = (
-        "请解释 Tool Calling 与 RAG 的主要区别。"
+        "请计算12.5和8的乘积，并查询单号为1001的订单的状态"
     )
 
     run_tool_conversation(query)
