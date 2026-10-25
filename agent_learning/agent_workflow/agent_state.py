@@ -16,6 +16,8 @@ class AgentState(TypedDict):
     tool_call_count: int
     final_answer: str | None
     error: str | None
+    plan: list[dict[str, Any]]
+    current_step_index: int  # 处理到了plan中的第几步
 
 
 def create_agent_state(query: str) -> AgentState:
@@ -31,7 +33,9 @@ def create_agent_state(query: str) -> AgentState:
         "round_count": 0,
         "tool_call_count": 0,
         "final_answer": None,
-        "error": None
+        "error": None,
+        "plan": [],
+        "current_step_index": 0,
     }
     return state
 
