@@ -24,7 +24,7 @@ def create_agent_state(query: str) -> AgentState:
     query = query.strip()
     state: AgentState = {
         "user_query": query,
-        "messages": [{"role": "users", "content": query}],
+        "messages": [{"role": "user", "content": query}],
         "status": "pending",
         "current_step": None,
         "tool_results": [],
