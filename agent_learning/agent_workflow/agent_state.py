@@ -12,6 +12,7 @@ class AgentState(TypedDict):
     ]
     current_step: str | None
     tool_results: list[dict[str, Any]]
+    observations: list[dict[str, Any]]
     round_count: int
     tool_call_count: int
     final_answer: str | None
@@ -30,6 +31,7 @@ def create_agent_state(query: str) -> AgentState:
         "status": "pending",
         "current_step": None,
         "tool_results": [],
+        "observations": [],
         "round_count": 0,
         "tool_call_count": 0,
         "final_answer": None,
