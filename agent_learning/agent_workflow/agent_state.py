@@ -15,6 +15,7 @@ class AgentState(TypedDict):
     observations: list[dict[str, Any]]
     round_count: int
     tool_call_count: int
+    tool_attempt_count: int
     final_answer: str | None
     error: str | None
     plan: list[dict[str, Any]]
@@ -34,6 +35,7 @@ def create_agent_state(query: str) -> AgentState:
         "observations": [],
         "round_count": 0,
         "tool_call_count": 0,
+        "tool_attempt_count": 0,
         "final_answer": None,
         "error": None,
         "plan": [],

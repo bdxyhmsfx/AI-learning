@@ -1,5 +1,5 @@
-from agent_learning.tool_calling.tool_dispatcher import execute_tool
 from agent_state import AgentState, record_tool_result, fail_task
+from recovery import execute_with_retry, RetryExhaustedError, ToolAttemptBudgetExceeded
 
 
 def execute_next_step(state: AgentState) -> bool:
@@ -25,14 +25,26 @@ def execute_next_step(state: AgentState) -> bool:
     state["current_step"] = f"execute_step_{step['id']}"
     print(f"\n开始执行步骤 {step['id']}: {step['description']}")
     try:
-        result = execute_tool(step["tool_name"], step["arguments"])
-    except (ValueError, TypeError) as e:
-        error_result = {"error": str(e)}
-        record_tool_result(state, step["tool_name"], error_result)
+        result = execute_with_retry(state, step)
+    except Exception as e:
+        known_errors = (
+            ValueError,
+            TypeError,
+            RetryExhaustedError,
+            ToolAttemptBudgetExceeded
+        )
+        if isinstance(e, known_errors):
+            error_message = str(e)
+        else:
+            error_message = "工具执行出现未预期的内部错误"
+        if step.get("attempts", 0) > 0:
+            record_tool_result(state, step["tool_name"], {"error": error_message})
         step["status"] = "failed"
-        step["error"] = str(e)
-        fail_task(state, f"步骤 {step['id']} 执行失败：{e}")
+        step["error"] = error_message
+        fail_task(state, f"步骤 {step['id']} 执行失败：{error_message}")
+
         return False
+
     step["result"] = result
     record_tool_result(state, step["tool_name"], result)
     step["status"] = "completed"
