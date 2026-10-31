@@ -43,3 +43,28 @@ def replan_after_observation(state: AgentState,observation: dict) -> int:
             skipped_ids.add(step["id"])
     print("重新规划：跳过步骤", sorted(skipped_ids))
     return len(skipped_ids)
+
+def evaluate_step_condition(state: AgentState,step:dict) -> bool:
+    guard = step.get("run_if")
+    if guard is None:
+        return True
+    source_id = guard["step_id"]
+    source_step = state["plan"][source_id - 1]
+    if source_step["status"] != "completed":
+        raise ValueError("条件来源步骤尚未完成")
+    result = source_step["result"]
+    if not isinstance(result, dict) or "status" not in result:
+        raise ValueError("条件来源缺少订单状态")
+    actual_status = result["status"]
+    expected_status = guard["status_equals"]
+    condition_met = actual_status == expected_status
+    observation = {
+        "step_id": source_id,
+        "guarded_step_id": step["id"],
+        "actual_status": actual_status,
+        "expected_status": expected_status,
+        "condition_met": condition_met
+    }
+    state["observations"].append(observation)
+
+    return condition_met

@@ -28,6 +28,14 @@ PLANNER_PROMPT = """
 5. 仅规划工具执行，不需要生成最终回答。
 6. 不能完成的任务返回 {"steps": []}。
 7. 只返回 JSON 对象，不要 Markdown 代码块。
+8. 必须根据用户描述决定工具的执行顺序，不能固定先查询订单再计算乘法。
+9. depends_on 只表达步骤执行先后关系。
+10. 如果用户明确要求“只有订单达到某状态才执行后续步骤”，
+    必须为对应的后续步骤增加 run_if：
+    {"step_id": 前置订单查询步骤ID, "status_equals": "要求的状态"}
+11. run_if 中的 step_id 必须同时出现在 depends_on 中。
+12. 没有业务条件的步骤，不要添加 run_if。
+13. 当前 run_if 只支持检查 get_order_status 返回的订单状态。
 
 返回格式：
 {
@@ -56,11 +64,15 @@ def validate_plan(plan_data: Any) -> list[dict[str, Any]]:
         raise ValueError("计划步骤数量不符合要求")
     validated_steps = []
     required_fields = {"id", "description", "tool_name", "arguments", "depends_on"}
+    allowed_fields = required_fields | {"run_if"}
     for expected_id, step in enumerate(steps, start=1):
         if not isinstance(step, dict):
             raise TypeError("每个步骤必须是字典")
-        if set(step) != required_fields:
-            raise ValueError("步骤字段不完整或存在额外字段")
+        fields = set(step)
+        if not required_fields.issubset(fields):
+            raise ValueError("步骤缺少必要字段")
+        if not fields.issubset(allowed_fields):
+            raise ValueError("步骤存在不允许的字段")
         if type(step["id"]) is not int:
             raise TypeError("步骤 ID 必须是整数")
         if step["id"] != expected_id:
@@ -81,6 +93,26 @@ def validate_plan(plan_data: Any) -> list[dict[str, Any]]:
                 raise ValueError("步骤只能依赖前面的步骤")
         if len(set(dependencies)) != len(dependencies):
             raise ValueError("依赖关系不能重复")
+        if "run_if" in step:
+            guard = step["run_if"]
+            if not isinstance(guard, dict):
+                raise TypeError("run_if 必须是字典")
+            if set(guard) != {"step_id", "status_equals"}:
+                raise ValueError("run_if 字段不符合要求")
+            source_id = guard["step_id"]
+            if type(source_id) is not int:
+                raise TypeError("run_if.step_id 必须是整数")
+            if not 1 <= source_id < expected_id:
+                raise ValueError("条件只能引用之前的步骤")
+            if source_id not in dependencies:
+                raise ValueError("条件来源必须同时出现在 depends_on 中")
+            source_step = steps[source_id - 1]
+            if source_step["tool_name"] != "get_order_status":
+                raise ValueError("当前只支持订单查询结果作为执行条件")
+            expected_status = guard["status_equals"]
+
+            if not isinstance(expected_status, str) or not expected_status.strip():
+                raise ValueError("status_equals 必须是非空字符串")
         validated_steps.append({**step, "status": "pending"})
     return validated_steps
 
@@ -94,13 +126,14 @@ def attach_plan(state: AgentState, plan_data: Any) -> None:
     state["plan"] = validated_plan
     state["current_step_index"] = 0
 
-def generate_plan(query:str)->dict:
+
+def generate_plan(query: str) -> dict:
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=os.environ["OPENROUTER_API_KEY"]
     )
     response = client.chat.completions.create(
-        model = MODEL_NAME,
+        model=MODEL_NAME,
         messages=[
             {
                 "role": "system",
