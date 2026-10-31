@@ -131,7 +131,7 @@ print("实验五通过")
 from planner import generate_plan, validate_plan
 from agent_runner import run_agent_workflow
 
-query = "只有订单1002已完成，才计算12.5和8的乘积"
+query = "先计算12.5和8的乘积，再查询订单1001的状态"
 
 plan_data = generate_plan(query)
 
